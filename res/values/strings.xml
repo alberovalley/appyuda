@@ -3,5 +3,6 @@
 
     <string name="hello">Hello World, AppyudaActivity!</string>
     <string name="app_name">Appyuda</string>
+    <string name="crash_toast_text">Ha habido un error. Se enviará un informe para ayudar a subsanarlo. Disculpe las molestias.</string>
 
 </resources>

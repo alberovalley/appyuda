@@ -18,6 +18,8 @@ import com.alberovalley.googleApis.geocoding.asyntasks.ReverseGeocodingAsynctask
 import com.alberovalley.googleApis.geocoding.asyntasks.listeners.ReverseGeocodingListener;
 import com.alberovalley.googleApis.geocoding.dao.GoogleGeocodeAddressDAO;
 import com.alberovalley.googleApis.response.ResponseEnvelope;
+import com.radioactiveyak.location_best_practices.utils.LegacyLastLocationFinder;
+
 
 public class AppyudaWidgetProvider extends AppWidgetProvider implements ReverseGeocodingListener {
 	public static String ACTION_WIDGET_CLICK ="ACTION_WIDGET_CLICK";
@@ -66,8 +68,10 @@ public class AppyudaWidgetProvider extends AppWidgetProvider implements ReverseG
 		 ReverseGeocodingAsynctask rga = new ReverseGeocodingAsynctask();
 		 rga.setReverseGeocodingListener(this);
 		 
-		 Location location = getLastKnownLocation(context);
-		  
+		 LegacyLastLocationFinder lf = new LegacyLastLocationFinder(context);
+		 
+		 //Location location = getLastKnownLocation(context);
+		 Location location = lf.getLastBestLocation(100, 10 *60*1000);
 		 rga.execute(new Double[]{location.getLatitude(), location.getLongitude()});
 		 
 		 
