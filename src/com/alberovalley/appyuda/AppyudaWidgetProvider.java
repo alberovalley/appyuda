@@ -14,11 +14,14 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.radioactiveyak.location_best_practices.utils.GingerbreadLastLocationFinder;
 import com.radioactiveyak.location_best_practices.utils.LegacyLastLocationFinder;
+import com.radioactiveyak.location_best_practices.utils.base.ILastLocationFinder;
 
 
 public class AppyudaWidgetProvider extends AppWidgetProvider /*implements ReverseGeocodingListener */{
@@ -65,11 +68,17 @@ public class AppyudaWidgetProvider extends AppWidgetProvider /*implements Revers
 	 if (action.equalsIgnoreCase(ACTION_WIDGET_CLICK)){
 		 Log.d("Appyuda","clicado");
 		 Toast.makeText(_context, "Buscando su dirección actual", Toast.LENGTH_LONG).show();
+
 		 /*
-		 ReverseGeocodingAsynctask rga = new ReverseGeocodingAsynctask();
-		 rga.setReverseGeocodingListener(this);
-		 */
-		 LegacyLastLocationFinder lf = new LegacyLastLocationFinder(context);
+		  * Intentando corregir el problema por el que falla en 4.0.4 usando
+		  * un ILastLocatorFinder diferente en función a la versión de SDK
+		  */
+		 ILastLocationFinder lf;
+		 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD_MR1){
+			 lf = new LegacyLastLocationFinder(context);
+		 }else{
+			 lf = new GingerbreadLastLocationFinder(context);
+		 }
 		 
 		 
 		 Location location = lf.getLastBestLocation(100, 10 *60*1000);
